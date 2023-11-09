@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Builder
 public class MemberDTO {
-    private Long memberId;
+    private Long memberId; //멤버 아이디
     @NotNull(message = "이메일은 필수 입력 사항입니다.")
     private String email;
     @NotNull(message = "비밀번호는 필수 입력 사항입니다.")

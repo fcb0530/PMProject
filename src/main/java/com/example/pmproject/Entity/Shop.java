@@ -28,6 +28,9 @@ public class Shop extends BaseEntity{
     @Column
     private String img;
 
+    @Column
+    private String content;
+
     @OneToMany(mappedBy = "shop", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     List<ShopComment> shopCommentList;
 }
