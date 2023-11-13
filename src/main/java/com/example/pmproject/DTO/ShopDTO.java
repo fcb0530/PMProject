@@ -20,6 +20,8 @@ public class ShopDTO {
     @NotNull(message = "매장 주소는 필수 입력 사항입니다.")
     private String location;
 
+    private String tel;
+
     private String img;
 
     private LocalDateTime regDate;

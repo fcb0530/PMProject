@@ -26,6 +26,9 @@ public class Shop extends BaseEntity{
     private String location;
 
     @Column
+    private String tel;
+
+    @Column
     private String img;
 
     @Column
