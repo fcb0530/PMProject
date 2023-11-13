@@ -5,6 +5,7 @@ import com.example.pmproject.DTO.MemberUpdateDTO;
 import com.example.pmproject.Entity.Member;
 import com.example.pmproject.Entity.PmUse;
 import com.example.pmproject.Repository.MemberRepository;
+import com.example.pmproject.Repository.PmUseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +21,7 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PmUseRepository pmUseRepository;
     private final PasswordEncoder passwordEncoder;
 
     public Page<MemberDTO> memberDTOS(Pageable pageable) {
@@ -37,7 +39,7 @@ public class MemberService {
     }
 
     public MemberDTO listOne(String email) {
-        Member member=memberRepository.findByEmail(email).orElseThrow();
+        Member member=memberRepository.findByEmail(email);
 
         return MemberDTO.builder()
                 .email(member.getEmail())
@@ -48,7 +50,7 @@ public class MemberService {
     }
 
     public String update(MemberUpdateDTO memberUpdateDTO, String email) {
-        Member member = memberRepository.findByEmail(email).orElseThrow();
+        Member member = memberRepository.findByEmail(email);
         member.setName(memberUpdateDTO.getName());
 
         if(!passwordEncoder.matches(memberUpdateDTO.getRecentPassword(), member.getPassword())) {
@@ -61,7 +63,7 @@ public class MemberService {
     }
 
     public boolean withdrawal(String email, String password) {
-        Member member = memberRepository.findByEmail(email).orElseThrow();
+        Member member = memberRepository.findByEmail(email);
 
         if(passwordEncoder.matches(password, member.getPassword())) {
             memberRepository.delete(member);
@@ -72,6 +74,8 @@ public class MemberService {
     }
 
     public List<PmUse> getPmUse(String memberName) {
-        return memberRepository.findPmUseByMemberName(memberName);
+        return pmUseRepository.findByMemberName(memberName);
     }
+
+
 }

@@ -20,11 +20,34 @@ public class GlobalService {
     private final ModelMapper modelMapper = new ModelMapper();
 
     public void register(MemberDTO memberDTO) {
-        memberDTO.setPassword(passwordEncoder.encode(memberDTO.getPassword()));
-        memberDTO.setRole(Role.ROLE_USER);
+        String password = passwordEncoder.encode(memberDTO.getPassword());
 
-        Member member = modelMapper.map(memberDTO, Member.class);
+        Member member = Member.builder()
+                .email(memberDTO.getEmail())
+                .password(password)
+                .name(memberDTO.getName())
+                .address(memberDTO.getAddress())
+                .findPwdHint(memberDTO.getFindPwdHint())
+                .findPwdAnswer(memberDTO.getFindPwdAnswer())
+                .role(Role.ROLE_USER)
+                .build();
+
+        validateDuplicateMember(member);
         memberRepository.save(member);
     }
+
+    private void validateDuplicateMember(Member member) {
+        Member findMemberByEmail = memberRepository.findByEmail(member.getEmail());
+        Member findMemberByName = memberRepository.findByName(member.getName());
+
+        if(findMemberByEmail != null) {
+            throw new IllegalStateException("이미 가입된 이메일입니다.");
+        }
+        if(findMemberByName != null) {
+            throw new IllegalStateException("이미 존재하는 닉네임입니다.");
+        }
+    }
+
+
 
 }
