@@ -15,5 +15,7 @@ public class PmDTO {
 
     private Boolean isUse;
 
+    private String location;
+
     private String img;
 }

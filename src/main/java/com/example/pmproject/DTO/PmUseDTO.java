@@ -17,13 +17,15 @@ public class PmUseDTO {
 
     private Long pm_id;
 
-    private Long member_name;
+    private String member_name;
 
     @NotEmpty(message = "주소는 필수 입력 사항입니다.")
     private String location;
 
     private String startLocation;
     private String finishLocation;
+
+    private Boolean isUse;
 
     private LocalDateTime regDate;
     private LocalDateTime modDate;

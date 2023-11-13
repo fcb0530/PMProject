@@ -26,9 +26,13 @@ public class Pm {
     private Boolean isUse;
 
     @Column
+    private String location;
+
+    @Column
     private String img;
 
     @OneToMany(mappedBy = "pm", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<PmUse> pmUseList;
+
 
 }
