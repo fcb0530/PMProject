@@ -31,11 +31,6 @@ public class SecurityConfig {
                 .headers().frameOptions().disable();
 
         http.authorizeRequests()
-                .antMatchers("/member/list").hasRole("ADMIN")
-                .antMatchers("/member/info").access("hasRole('ADMIN') or hasRole('USER')")
-                .antMatchers("/member/update/**").access("hasRole('ADMIN') or hasRole('USER')")
-                .antMatchers("/board/**").access("hasRole('ADMIN') or hasRole('USER')")
-                .antMatchers("/login", "/signup").anonymous()
                 .anyRequest().permitAll();
 
         http.formLogin()
@@ -43,7 +38,7 @@ public class SecurityConfig {
                 .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/")
                 .failureUrl("/login?error=true")
-                .usernameParameter("id")
+                .usernameParameter("email")
                 .passwordParameter("password")
                 .and()
                 .logout()

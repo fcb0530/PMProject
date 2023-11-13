@@ -26,6 +26,4 @@ public class PmUse extends BaseEntity{
     @JoinColumn(name="member_name", referencedColumnName = "name")
     private Member member;
 
-    @Column(nullable = false)
-    private String content;
 }

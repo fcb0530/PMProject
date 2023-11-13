@@ -12,5 +12,4 @@ public class PmDTO {
     private Integer type;
     private Boolean isUse;
     private String img;
-
 }
