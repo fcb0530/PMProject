@@ -19,7 +19,7 @@ public class ProductComment extends BaseEntity{
     private Long productCommentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="productId")
+    @JoinColumn(name="product_id")
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)

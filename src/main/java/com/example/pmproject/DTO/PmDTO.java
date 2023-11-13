@@ -8,8 +8,12 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class PmDTO {
+
     private Long pmId;
+
     private Integer type;
+
     private Boolean isUse;
+
     private String img;
 }

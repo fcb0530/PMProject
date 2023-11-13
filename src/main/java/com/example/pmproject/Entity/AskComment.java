@@ -10,17 +10,17 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "shopcomment")
-@SequenceGenerator(sequenceName = "shopComment_SEQ", name = "shopComment_SEQ", allocationSize = 1)
-public class ShopComment extends BaseEntity{
+@Table(name = "askComment")
+@SequenceGenerator(sequenceName = "askComment_SEQ", name = "askComment_SEQ", allocationSize = 1)
+public class AskComment extends BaseEntity{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "shopComment_SEQ")
-    private Long productCommentId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "askComment_SEQ")
+    private Long askCommentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="shop_id")
-    private Shop shop;
+    @JoinColumn(name="ask_id")
+    private Ask ask;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_name", referencedColumnName = "name")

@@ -2,7 +2,9 @@ package com.example.pmproject.DTO;
 
 import lombok.*;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -10,9 +12,19 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Builder
 public class PmUseDTO {
+
     private Long pmUseId;
-    private Long pId;
+
+    private Long pm_id;
+
     private Long member_name;
-    @NotNull(message = "내용은 필수 입력 사항입니다.")
-    private String content;
+
+    @NotEmpty(message = "주소는 필수 입력 사항입니다.")
+    private String location;
+
+    private String startLocation;
+    private String finishLocation;
+
+    private LocalDateTime regDate;
+    private LocalDateTime modDate;
 }

@@ -29,6 +29,6 @@ public class Pm {
     private String img;
 
     @OneToMany(mappedBy = "pm", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    List<PmUse> pmUseList;
+    private List<PmUse> pmUseList;
 
 }

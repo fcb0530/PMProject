@@ -12,8 +12,13 @@ import java.util.List;
 public interface PmUseRepository extends JpaRepository<PmUse, Long> {
 
     @Query("select u From PmUse u Where u.pm.pmId = :pmId")
-    List<Pm> findByPmId(@Param("pmId") Long pmId);
+    List<PmUse> findByPmId(@Param("pmId") Long pmId);
 
     @Query("select u from PmUse u where u.member.name = :memberName")
-    List<Pm> findByMemberName(@Param("memberName") String memberName);
+    List<PmUse> findByMemberName(@Param("memberName") String memberName);
+
+    @Query("SELECT p FROM PmUse p WHERE " +
+            "(p.startLocation LIKE %:keyword% AND p.finishLocation IS NULL) OR " +
+            "(p.finishLocation LIKE %:keyword% AND p.finishLocation IS NOT NULL)")
+    List<PmUse> searchByLocation(@Param("keyword") String keyword);
 }

@@ -12,8 +12,8 @@ import java.util.List;
 public interface ShopCommentRepository extends JpaRepository<ShopComment, Long> {
 
     @Query("select u From ShopComment u Where u.shop.shopId = :shopId")
-    List<Shop> findByShopId(@Param("shopId") Long shopId);
+    List<ShopComment> findByShopId(@Param("shopId") Long shopId);
 
     @Query("select u from ShopComment u where u.member.name = :memberName")
-    List<Pm> findByMemberName(@Param("memberName") String memberName);
+    List<ShopComment> findByMemberName(@Param("memberName") String memberName);
 }

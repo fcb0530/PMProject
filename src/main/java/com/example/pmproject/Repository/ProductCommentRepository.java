@@ -12,8 +12,9 @@ import java.util.List;
 public interface ProductCommentRepository extends JpaRepository<ProductComment, Long> {
 
     @Query("select u From ProductComment u Where u.product.productId = :productId")
-    List<Product> findByProductId(@Param("productId") Long productId);
+    List<ProductComment> findByProductId(@Param("productId") Long productId);
 
     @Query("select u from ProductComment u where u.member.name = :memberName")
-    List<Pm> findByMemberName(@Param("memberName") String memberName);
+    List<ProductComment> findByMemberName(@Param("memberName") String memberName);
+
 }

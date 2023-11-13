@@ -19,11 +19,17 @@ public class PmUse extends BaseEntity{
     private Long pmUseId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="pId")
+    @JoinColumn(name="pm_id")
     private Pm pm;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_name", referencedColumnName = "name")
     private Member member;
+
+    @Column(updatable = false, nullable = false)
+    private String startLocation;
+
+    @Column
+    private String finishLocation;
 
 }

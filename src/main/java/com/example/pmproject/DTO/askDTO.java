@@ -3,7 +3,6 @@ package com.example.pmproject.DTO;
 import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter
@@ -11,17 +10,21 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductCommentDTO {
+public class askDTO {
 
-    private Long productCommentId;
+    private Long askId;
 
-    private Long product_id;
+    @NotEmpty(message = "문의 제목은 필수 입력 사항입니다.")
+    private String title;
+
+    private Integer type;
+
+    @NotEmpty(message = "문의 내용은 필수 입력 사항입니다.")
+    private String content;
 
     private String member_name;
-
-    @NotEmpty(message = "내용은 필수 입력 사항입니다.")
-    private String content;
 
     private LocalDateTime regDate;
     private LocalDateTime modDate;
 }
+

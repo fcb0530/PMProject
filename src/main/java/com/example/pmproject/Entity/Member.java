@@ -32,6 +32,9 @@ public class Member extends BaseEntity implements Serializable {
     @Column(nullable = false)
     private String name; //멤버 닉네임
 
+    @Column(nullable = false)
+    private String address; //멤버 주소
+
     @Column
     private Integer findPwdHint;
 
@@ -51,4 +54,10 @@ public class Member extends BaseEntity implements Serializable {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<ShopComment> shopCommentList;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Ask> askList;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<AskComment> askCommentList;
 }
