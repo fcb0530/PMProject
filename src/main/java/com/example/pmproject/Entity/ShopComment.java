@@ -16,7 +16,7 @@ public class ShopComment extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "shopComment_SEQ")
-    private Long productCommentId;
+    private Long shopCommentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="shop_id")

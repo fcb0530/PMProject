@@ -28,7 +28,6 @@ public class PmService {
     private String pmImgUploadLocation;
     private final imgService imgService;
     private final PmRepository pmRepository;
-    private final PmUseRepository pmUseRepository;
     private final ModelMapper modelMapper=new ModelMapper();
 
     public Page<PmDTO> pmDTOS(String keyword, Pageable pageable) {

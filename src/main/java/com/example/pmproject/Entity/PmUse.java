@@ -32,4 +32,6 @@ public class PmUse extends BaseEntity{
     @Column
     private String finishLocation;
 
+    @Column
+    private Boolean isUse;
 }

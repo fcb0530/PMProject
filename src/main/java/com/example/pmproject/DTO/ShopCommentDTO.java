@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 public class ShopCommentDTO {
 
-    private Long productCommentId;
+    private Long shopCommentId;
 
     private Long shopId;
 

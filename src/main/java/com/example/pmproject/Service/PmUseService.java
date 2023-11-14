@@ -1,20 +1,22 @@
 package com.example.pmproject.Service;
 
 import com.example.pmproject.DTO.PmUseDTO;
-import com.example.pmproject.Entity.Member;
 import com.example.pmproject.Entity.Pm;
 import com.example.pmproject.Entity.PmUse;
-import com.example.pmproject.Repository.MemberRepository;
 import com.example.pmproject.Repository.PmRepository;
 import com.example.pmproject.Repository.PmUseRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.Authentication;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,36 +24,48 @@ import java.util.List;
 public class PmUseService {
     private final PmUseRepository pmUseRepository;
     private final PmRepository pmRepository;
-    private final MemberRepository memberRepository;
-    private final ModelMapper modelMappper=new ModelMapper();
+    private final ModelMapper modelMapper=new ModelMapper();
 
-    public List<PmUseDTO> pmUseDTOS(String memberName) {
-        List<PmUse> pmUse = pmUseRepository.findByMemberName(memberName);
+    public Page<PmUseDTO> pmUseDTOS(String memberName, Pageable pageable) {
+        int page = pageable.getPageNumber()-1;
+        int pageLimit=5;
+        Page<PmUse> paging=pmUseRepository.findByMemberNameList(memberName, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "pmUseId")));
 
-        return Arrays.asList(modelMappper.map(pmUse, PmUseDTO[].class));
+        return paging.map(pmUse -> PmUseDTO.builder()
+                .isUse(pmUse.getIsUse())
+                .startLocation(pmUse.getStartLocation())
+                .finishLocation(pmUse.getFinishLocation())
+                .regDate(pmUse.getRegDate())
+                .modDate(pmUse.getModDate())
+                .build());
     }
 
     public void register(PmUseDTO pmUseDTO) {
-        PmUse pmUse=modelMappper.map(pmUseDTO, PmUse.class);
+        PmUse pmUse=modelMapper.map(pmUseDTO, PmUse.class);
         pmUseRepository.save(pmUse);
     }
 
     public void modify(PmUseDTO pmUseDTO) {
-        List<PmUse> pmUseList = pmUseRepository.findByMemberName(pmUseDTO.getMember_name());
+        PmUse pmUse = pmUseRepository.findById(pmUseDTO.getPmUseId()).orElseThrow();
+        Optional<Pm> pmOptional = pmRepository.findById(pmUseDTO.getPm_id());
 
-        for(PmUse pmUse : pmUseList) {
-            if(pmUse.getPm() != null) {
-                Pm pm = pmUse.getPm();
-                if(!pm.getIsUse()) {
-                    pm.setIsUse(true);
-                    pm.setLocation(pmUse.getFinishLocation());
-                    pmRepository.save(pm);
-                }
-            }
+        if (pmOptional.isPresent()) {
+            Pm pm = pmOptional.get();
+
+            // PmUse 업데이트
+            pmUse.setFinishLocation(pmUseDTO.getLocation());
+            pmUse.setIsUse(true);
+
+            // Pm 업데이트
+            pm.setIsUse(true);
+            pm.setLocation(pmUseDTO.getLocation());
+
+            pmUseRepository.save(pmUse);
+            pmRepository.save(pm);
+        } else {
+            // Pm을 찾지 못한 경우 처리
+            throw new EntityNotFoundException("ID에 해당하는 Pm을 찾을 수 없습니다: " + pmUseDTO.getPm_id());
         }
-
-        PmUse modify=modelMappper.map(pmUseDTO,PmUse.class);
-        pmUseRepository.save(modify);
     }
 
     public void updatePmLocation() {

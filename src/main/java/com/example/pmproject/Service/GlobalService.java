@@ -37,8 +37,8 @@ public class GlobalService {
     }
 
     private void validateDuplicateMember(Member member) {
-        Member findMemberByEmail = memberRepository.findByEmail(member.getEmail());
-        Member findMemberByName = memberRepository.findByName(member.getName());
+        Member findMemberByEmail = memberRepository.findByEmail(member.getEmail()).orElseThrow();
+        Member findMemberByName = memberRepository.findByName(member.getName()).orElseThrow();
 
         if(findMemberByEmail != null) {
             throw new IllegalStateException("이미 가입된 이메일입니다.");

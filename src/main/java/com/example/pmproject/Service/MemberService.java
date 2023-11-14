@@ -39,7 +39,7 @@ public class MemberService {
     }
 
     public MemberDTO listOne(String email) {
-        Member member=memberRepository.findByEmail(email);
+        Member member=memberRepository.findByEmail(email).orElseThrow();
 
         return MemberDTO.builder()
                 .email(member.getEmail())
@@ -50,7 +50,7 @@ public class MemberService {
     }
 
     public String update(MemberUpdateDTO memberUpdateDTO, String email) {
-        Member member = memberRepository.findByEmail(email);
+        Member member = memberRepository.findByEmail(email).orElseThrow();
         member.setName(memberUpdateDTO.getName());
 
         if(!passwordEncoder.matches(memberUpdateDTO.getRecentPassword(), member.getPassword())) {
@@ -63,7 +63,7 @@ public class MemberService {
     }
 
     public boolean withdrawal(String email, String password) {
-        Member member = memberRepository.findByEmail(email);
+        Member member = memberRepository.findByEmail(email).orElseThrow();
 
         if(passwordEncoder.matches(password, member.getPassword())) {
             memberRepository.delete(member);
@@ -71,10 +71,6 @@ public class MemberService {
         }else {
             return false;
         }
-    }
-
-    public List<PmUse> getPmUse(String memberName) {
-        return pmUseRepository.findByMemberName(memberName);
     }
 
 
