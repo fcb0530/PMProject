@@ -31,6 +31,9 @@ public class SecurityConfig {
                 .headers().frameOptions().disable();
 
         http.authorizeRequests()
+                .antMatchers("/member/**").hasRole("USER")
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/login", "/register").anonymous()
                 .anyRequest().permitAll();
 
         http.formLogin()
