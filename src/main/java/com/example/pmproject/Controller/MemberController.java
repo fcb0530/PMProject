@@ -29,7 +29,6 @@ import java.util.Objects;
 @RequestMapping("/member")
 public class MemberController {
 
-
     private final MemberService memberService;
 
     @GetMapping("/list")
@@ -55,35 +54,29 @@ public class MemberController {
 
         model.addAttribute("member", member);
 
-        return "member/info";
+        return "member/info/info";
     }
 
     @GetMapping("/update")
-    public String updateForm(Model model, Authentication authentication) {
+    public String updateForm(MemberUpdateDTO memberUpdateDTO, Model model, Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         MemberDTO memberDTO=memberService.listOne(userDetails.getUsername());
         model.addAttribute("memberDTO", memberDTO);
-        model.addAttribute("memberUpdateDTO", new MemberUpdateDTO());
 
         return "member/update";
     }
 
     @PostMapping("/update")
-    public String update(@Valid MemberUpdateDTO memberUpdateDTO, BindingResult bindingResult, Model model, Authentication authentication) {
+    public String update(@Valid MemberUpdateDTO memberUpdateDTO, MemberDTO memberDTO, BindingResult bindingResult, Model model, Authentication authentication) {
         if(bindingResult.hasErrors()) {
-            model.addAttribute("memberUpdateDTO",memberUpdateDTO);
-            System.out.println("error1");
             return "member/update";
         }
-        System.out.println("error4");
+
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String result = memberService.update(memberUpdateDTO, userDetails.getUsername());
 
         if(result==null) {
-            model.addAttribute("memberDTO",memberUpdateDTO);
-            System.out.println("error2");
             model.addAttribute("wrongPwd", "기존 비밀번호가 맞지 않습니다.");
-
             return "member/update";
         }
 

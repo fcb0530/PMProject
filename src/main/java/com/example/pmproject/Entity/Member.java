@@ -32,8 +32,11 @@ public class Member extends BaseEntity implements Serializable {
     @Column(nullable = false)
     private String name; //멤버 닉네임
 
-    @Column(nullable = false)
-    private String address; //멤버 주소
+    @Column
+    private String address;
+
+    @Column
+    private String tel;
 
     @Column
     private Integer findPwdHint;

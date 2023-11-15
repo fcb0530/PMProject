@@ -52,9 +52,6 @@ public class SecurityConfig {
         http.exceptionHandling()
                 .authenticationEntryPoint((request, response, authException) -> {
                     response.sendRedirect("/login");
-                })
-                .accessDeniedHandler((request, response, accessDeniedException) -> {
-                    response.sendRedirect("/denied");
                 });
 
         return http.build();

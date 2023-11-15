@@ -1,6 +1,7 @@
 package com.example.pmproject.DTO;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -10,11 +11,18 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 @Builder
 public class MemberUpdateDTO {
+
     private String email;
-    @NotEmpty(message = "기존 비밀번호는 필수 입력 사항입니다.")
+
     private String recentPassword;
-    @NotEmpty(message = "새로운 비밀번호는 필수 입력 사항입니다.")
+
+    @Length(min=8, max=16, message = "비밀번호는 8자 이상, 16자 이하로 입력하여 주십시오.")
     private String newPassword;
-    @NotEmpty(message = "닉네임은 필수 입력 사항입니다.")
+
     private String name;
+
+    private String address;
+
+    private String tel;
+
 }

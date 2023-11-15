@@ -1,6 +1,7 @@
 package com.example.pmproject.Controller;
 
 import com.example.pmproject.DTO.MemberDTO;
+import com.example.pmproject.DTO.MemberPasswordDTO;
 import com.example.pmproject.Service.GlobalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -27,19 +28,41 @@ public class GlobalController {
         return "loginForm";
     }
 
-    @GetMapping("/member/register")
-    public String registerForm(Model model) {
-        model.addAttribute("memberDTO", new MemberDTO());
+    @GetMapping("/register")
+    public String registerForm(MemberDTO memberDTO) {
         return "member/register";
     }
 
-    @PostMapping("/member/register")
+    @PostMapping("/register")
     public String register(@Valid MemberDTO memberDTO, BindingResult bindingResult, Model model) {
         if(bindingResult.hasErrors()) {
-            model.addAttribute("memberDTO",memberDTO);
             return "member/register";
         }
-        globalService.register(memberDTO);
-        return "redirect:/";
+        try {
+            globalService.register(memberDTO);
+            return "redirect:/";
+        }catch (IllegalStateException e) {
+            model.addAttribute("error", e.getMessage());
+            return "member/register";
+        }
+    }
+
+    @GetMapping("/findPassword")
+    public String findPasswordForm(MemberPasswordDTO memberPasswordDTO) {
+        return "member/findPassword";
+    }
+
+    @PostMapping("/findPassword")
+    public String findPassword(@Valid MemberPasswordDTO memberPasswordDTO, BindingResult bindingResult, Model model) {
+        if(bindingResult.hasErrors()) {
+            return "member/findPassword";
+        }
+        try {
+            globalService.findPassword(memberPasswordDTO);
+            return "redirect:/";
+        }catch (IllegalStateException e) {
+            model.addAttribute("error", e.getMessage());
+            return "member/findPassword";
+        }
     }
 }

@@ -7,6 +7,7 @@ import com.example.pmproject.Entity.PmUse;
 import com.example.pmproject.Repository.MemberRepository;
 import com.example.pmproject.Repository.PmUseRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,8 +22,8 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final PmUseRepository pmUseRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper=new ModelMapper();
 
     public Page<MemberDTO> memberDTOS(Pageable pageable) {
         int page=pageable.getPageNumber()-1;
@@ -44,6 +45,8 @@ public class MemberService {
         return MemberDTO.builder()
                 .email(member.getEmail())
                 .name(member.getName())
+                .address(member.getAddress())
+                .tel(member.getTel())
                 .role(member.getRole())
                 .regDate(member.getRegDate())
                 .build();
@@ -51,15 +54,15 @@ public class MemberService {
 
     public String update(MemberUpdateDTO memberUpdateDTO, String email) {
         Member member = memberRepository.findByEmail(email).orElseThrow();
-        member.setName(memberUpdateDTO.getName());
 
         if(!passwordEncoder.matches(memberUpdateDTO.getRecentPassword(), member.getPassword())) {
             return null;
         }
-        member.setPassword(passwordEncoder.encode(memberUpdateDTO.getNewPassword()));
-        memberRepository.save(member);
+        memberUpdateDTO.setNewPassword(passwordEncoder.encode(memberUpdateDTO.getNewPassword()));
+        Member modify = modelMapper.map(memberUpdateDTO, Member.class);
+        memberRepository.save(modify);
 
-        return member.getEmail();
+        return modify.getEmail();
     }
 
     public boolean withdrawal(String email, String password) {
